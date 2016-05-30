@@ -1,3 +1,4 @@
+
 package Apbbridge
 
 import Chisel._
@@ -7,23 +8,35 @@ import junctions._
 class Apbbridge  extends Module {
   implicit val p = Parameters.empty
   val io = new Bundle {
-    val ahbport = new HastiSlaveIO
-    val uart = new PociIO
-    val gpio = new PociIO
+    val ahbport = new HastiSlaveIO()
+
+
+    val uart = new PociIO()
+    val gpio = new PociIO()
+    val periph = new PociIO()
+    val intc = new PociIO()
+
   }
 
-  val gpio_afn = (addr: UInt) => addr (31,24) === UInt (0xF0)
-  val uart_afn = (addr: UInt) => addr (31,24) === UInt (0xF1)
+    val uart_afn = (addr: UInt) => addr (31,24) === UInt (241)
+    val gpio_afn = (addr: UInt) => addr (31,24) === UInt (240)
+    val periph_afn = (addr: UInt) => addr (31,24) === UInt (243)
+    val intc_afn = (addr: UInt) => addr (31,24) === UInt (242)
 
 
-  val bridge = Module(new HastiToPociBridge)
-  val apbbus = Module(new PociBus(Seq(gpio_afn, uart_afn)))
 
-  apbbus.io.master <> bridge.io.out
+    val bridge = Module(new HastiToPociBridge)
+    val apbbus = Module(new PociBus(Seq(uart_afn,gpio_afn,periph_afn,intc_afn)))
 
-  io.gpio <> apbbus.io.slaves(0)
-  io.uart <> apbbus.io.slaves(1)
-  bridge.io.in <> io.ahbport
+    apbbus.io.master <> bridge.io.out
+
+    bridge.io.in <> io.ahbport
+
+    io.uart <> apbbus.io.slaves(0)
+    io.gpio <> apbbus.io.slaves(1)
+    io.periph <> apbbus.io.slaves(2)
+    io.intc <> apbbus.io.slaves(3)
+
 
 }
 

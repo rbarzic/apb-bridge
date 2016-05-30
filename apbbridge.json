@@ -1,0 +1,34 @@
+{
+    "master": "ahbport",
+    "slaves": {
+        "gpio": {
+            "address_range": [
+                31,
+                24
+            ],
+            "address_value": 240
+        },
+        "uart": {
+            "address_range": [
+                31,
+                24
+            ],
+            "address_value": 241
+        },
+        "intc": {
+            "address_range": [
+                31,
+                24
+            ],
+            "address_value": 242
+        },
+        "periph": {
+            "address_range": [
+                31,
+                24
+            ],
+            "address_value": 243
+        }
+
+    }
+}

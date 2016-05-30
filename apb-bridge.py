@@ -22,6 +22,7 @@ class Apbbridge  extends Module {{
 {decoding_fns}
 
 {bridge_inst}
+{bridge_connect}
 
 {master_connect}
 {slave_connect}
@@ -29,14 +30,14 @@ class Apbbridge  extends Module {{
 }}
 
 
-class ApbbridgeTests(c: Ahbmli) extends Tester(c) {{
+class ApbbridgeTests(c: Apbbridge) extends Tester(c) {{
   step(1)
 }}
 
 object Apbbridge {{
   def main(args: Array[String]): Unit = {{
     val tutArgs = args.slice(1, args.length)
-    chiselMainTest(tutArgs, () => Module(new Apbdridge())) {{
+    chiselMainTest(tutArgs, () => Module(new Apbbridge())) {{
       c => new ApbbridgeTests(c) }}
   }}
 }}
@@ -44,10 +45,10 @@ object Apbbridge {{
 # smaller templates for code snippets (see string.format in Python doc if you are not familiar
 # with the format)
 tpl_master_ios = "    val {m_name} = new HastiSlaveIO()\n"
-tpl_slave_ios = "    val {s_name} = new PociIO().flip\n"
+tpl_slave_ios = "    val {s_name} = new PociIO()\n"
 
 tpl_master_connect = "    bridge.io.in <> io.{m_name}\n"
-tpl_slave_connect =  "    io.{s_name} <> xbar.io.slaves({s_idx})\n"
+tpl_slave_connect =  "    io.{s_name} <> apbbus.io.slaves({s_idx})\n"
 
 tpl_decoding_fns = "    val {fn_name} = (addr: UInt) => addr ({addr_msb},{addr_lsb}) === UInt ({addr_val})\n"
 
@@ -56,7 +57,7 @@ tpl_bridge_inst = """
     val apbbus = Module(new PociBus(Seq({fn_list})))
 """
 
-
+tpl_bridge_connect = "    apbbus.io.master <> bridge.io.out"
 
 
 
@@ -134,6 +135,8 @@ def bridge_inst(spec):
     txt += tpl_bridge_inst.format(**d)
     return txt
 
+def bridge_connect(spec):
+    return tpl_bridge_connect
 
 def get_args():
     """
@@ -171,8 +174,9 @@ if __name__ == '__main__':
     d['master_ios']      = master_ios(apbbridge)
     d['slave_ios']      = slave_ios(apbbridge)
     d['bridge_inst']      = bridge_inst(apbbridge)
+    d['bridge_connect']      = bridge_connect(apbbridge)
     txt = tpl_file.format(**d)
 
-    outfile_name = args.outdir + "/Ahbmli.scala"
+    outfile_name = args.outdir + "/Apbbridge.scala"
     with open(outfile_name,'w') as f:
         f.write(txt)
