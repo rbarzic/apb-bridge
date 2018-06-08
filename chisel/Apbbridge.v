@@ -316,14 +316,14 @@ module Apbbridge(input clk, input reset,
     input [31:0] io_gpio_prdata,
     input  io_gpio_pready,
     input  io_gpio_pslverr,
-    output[31:0] io_periph_paddr,
-    output io_periph_pwrite,
-    output io_periph_psel,
-    output io_periph_penable,
-    output[31:0] io_periph_pwdata,
-    input [31:0] io_periph_prdata,
-    input  io_periph_pready,
-    input  io_periph_pslverr,
+    output[31:0] io_cpuctrl_paddr,
+    output io_cpuctrl_pwrite,
+    output io_cpuctrl_psel,
+    output io_cpuctrl_penable,
+    output[31:0] io_cpuctrl_pwdata,
+    input [31:0] io_cpuctrl_prdata,
+    input  io_cpuctrl_pready,
+    input  io_cpuctrl_pslverr,
     output[31:0] io_intc_paddr,
     output io_intc_pwrite,
     output io_intc_psel,
@@ -372,11 +372,11 @@ module Apbbridge(input clk, input reset,
   assign io_intc_psel = apbbus_io_slaves_3_psel;
   assign io_intc_pwrite = apbbus_io_slaves_3_pwrite;
   assign io_intc_paddr = apbbus_io_slaves_3_paddr;
-  assign io_periph_pwdata = apbbus_io_slaves_2_pwdata;
-  assign io_periph_penable = apbbus_io_slaves_2_penable;
-  assign io_periph_psel = apbbus_io_slaves_2_psel;
-  assign io_periph_pwrite = apbbus_io_slaves_2_pwrite;
-  assign io_periph_paddr = apbbus_io_slaves_2_paddr;
+  assign io_cpuctrl_pwdata = apbbus_io_slaves_2_pwdata;
+  assign io_cpuctrl_penable = apbbus_io_slaves_2_penable;
+  assign io_cpuctrl_psel = apbbus_io_slaves_2_psel;
+  assign io_cpuctrl_pwrite = apbbus_io_slaves_2_pwrite;
+  assign io_cpuctrl_paddr = apbbus_io_slaves_2_paddr;
   assign io_gpio_pwdata = apbbus_io_slaves_1_pwdata;
   assign io_gpio_penable = apbbus_io_slaves_1_penable;
   assign io_gpio_psel = apbbus_io_slaves_1_psel;
@@ -435,9 +435,9 @@ module Apbbridge(input clk, input reset,
        .io_slaves_2_psel( apbbus_io_slaves_2_psel ),
        .io_slaves_2_penable( apbbus_io_slaves_2_penable ),
        .io_slaves_2_pwdata( apbbus_io_slaves_2_pwdata ),
-       .io_slaves_2_prdata( io_periph_prdata ),
-       .io_slaves_2_pready( io_periph_pready ),
-       .io_slaves_2_pslverr( io_periph_pslverr ),
+       .io_slaves_2_prdata( io_cpuctrl_prdata ),
+       .io_slaves_2_pready( io_cpuctrl_pready ),
+       .io_slaves_2_pslverr( io_cpuctrl_pslverr ),
        .io_slaves_1_paddr( apbbus_io_slaves_1_paddr ),
        .io_slaves_1_pwrite( apbbus_io_slaves_1_pwrite ),
        .io_slaves_1_psel( apbbus_io_slaves_1_psel ),

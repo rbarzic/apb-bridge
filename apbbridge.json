@@ -22,7 +22,7 @@
             ],
             "address_value": 242
         },
-        "periph": {
+        "cpuctrl": {
             "address_range": [
                 31,
                 24

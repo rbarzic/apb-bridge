@@ -13,20 +13,20 @@ class Apbbridge  extends Module {
 
     val uart = new PociIO()
     val gpio = new PociIO()
-    val periph = new PociIO()
+    val cpuctrl = new PociIO()
     val intc = new PociIO()
 
   }
 
     val uart_afn = (addr: UInt) => addr (31,24) === UInt (241)
     val gpio_afn = (addr: UInt) => addr (31,24) === UInt (240)
-    val periph_afn = (addr: UInt) => addr (31,24) === UInt (243)
+    val cpuctrl_afn = (addr: UInt) => addr (31,24) === UInt (243)
     val intc_afn = (addr: UInt) => addr (31,24) === UInt (242)
 
 
 
     val bridge = Module(new HastiToPociBridge)
-    val apbbus = Module(new PociBus(Seq(uart_afn,gpio_afn,periph_afn,intc_afn)))
+    val apbbus = Module(new PociBus(Seq(uart_afn,gpio_afn,cpuctrl_afn,intc_afn)))
 
     apbbus.io.master <> bridge.io.out
 
@@ -34,7 +34,7 @@ class Apbbridge  extends Module {
 
     io.uart <> apbbus.io.slaves(0)
     io.gpio <> apbbus.io.slaves(1)
-    io.periph <> apbbus.io.slaves(2)
+    io.cpuctrl <> apbbus.io.slaves(2)
     io.intc <> apbbus.io.slaves(3)
 
 
