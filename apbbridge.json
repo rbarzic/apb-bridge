@@ -22,13 +22,19 @@
             ],
             "address_value": 242
         },
-        "cpuctrl": {
+        "timer": {
             "address_range": [
                 31,
                 24
             ],
             "address_value": 243
+        },
+        "cpuctrl" : {
+            "address_range": [
+                31,
+                24
+            ],
+            "address_value": 244
         }
-
     }
 }
